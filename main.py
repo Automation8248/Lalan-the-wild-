@@ -248,11 +248,11 @@ def run_automation():
                     current_date = now.strftime("%d-%B-%Y")     
                     current_time = now.strftime("%H:%M:%S")     
 
-                    # --- SEND TO WEBHOOK (Full Data + URL!) ---
+                    # --- 3. SEND TO WEBHOOK (Full Data + URL!) ---
                     webhook_url = os.getenv("WEBHOOK_URL")
                     if webhook_url:
                         payload = {
-                            "image_url": img_url,  
+                            "image_url": img_url,  # <--- BING DIRECT URL FIX!
                             "title": selected_title,
                             "caption": selected_caption,
                             "facebook_tags": fb_tags,
