@@ -1,0 +1,37 @@
+name: USA Bing Automation
+
+on:
+  schedule:
+    # Din mein do baar: US Morning (9 AM) aur US Evening (8 PM)
+    - cron: '0 1,14 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Script
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        run: python main.py
+
+      - name: Commit History
+        run: |
+          git config --global user.name "Automation Bot"
+          git config --global user.email "bot@github.com"
+          git add history.txt
+          git commit -m "Update history" || exit 0
+          git push
